@@ -1,3 +1,5 @@
+const DUMMY_URL_BASE = 'http://clerk-dummy';
+
 export function parseSearchParams(queryString = ''): URLSearchParams {
   if (queryString.startsWith('?')) {
     queryString = queryString.slice(1);
@@ -24,4 +26,10 @@ export function addClerkPrefix(str: string | undefined) {
 
   const stripped = str.replace(regex, '');
   return `clerk.${stripped}`;
+}
+
+export function isRelativeUrl(str: string) {
+  const url = new URL(str, DUMMY_URL_BASE);
+
+  return url.origin === DUMMY_URL_BASE;
 }
