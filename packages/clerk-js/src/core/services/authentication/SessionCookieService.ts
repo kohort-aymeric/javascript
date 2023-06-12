@@ -13,6 +13,12 @@ export class SessionCookieService {
   private environment: EnvironmentResource | undefined;
   private poller: SessionCookiePoller | null = null;
 
+  get isSessionExpired() {
+    const sessionJWTLifeSpan = 60;
+    // truncate timestamp to seconds, since session uat is stored as a unix timestamp
+    return this.cookies.getSessionUatCookie() + sessionJWTLifeSpan <= Math.floor(Date.now() / 1000);
+  }
+
   constructor(private clerk: Clerk) {
     // set cookie on token update
     eventBus.on(events.TokenUpdate, ({ token }) => {
@@ -74,6 +80,7 @@ export class SessionCookieService {
 
   private setSessionCookie(token: TokenResource | string) {
     this.cookies.setSessionCookie(typeof token === 'string' ? token : token.getRawString());
+    this.cookies.setSessionUatCookie();
   }
 
   private updateSessionCookie(token: TokenResource | string | undefined | null) {
