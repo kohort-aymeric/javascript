@@ -60,6 +60,8 @@ export const createCookieHandler = () => {
     });
   };
 
+  const removeSessionUatCookie = () => sessionUatCookie.remove();
+
   const getSessionUatCookie = (): number => {
     return parseInt(sessionUatCookie.get() || '0', 10);
   };
@@ -114,5 +116,6 @@ export const createCookieHandler = () => {
     removeDevBrowserCookie,
     getSessionUatCookie,
     setSessionUatCookie,
+    removeSessionUatCookie,
   };
 };
